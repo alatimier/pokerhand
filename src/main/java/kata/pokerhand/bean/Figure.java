@@ -1,4 +1,4 @@
-package kata.pokerhand.enumeration;
+package kata.pokerhand.bean;
 
 public enum Figure {
 
@@ -14,7 +14,7 @@ public enum Figure {
 	JACK("Jack"),
 	QUEEN("Queen"),
 	KING("King"),
-	AS("Ace");
+	ACE("Ace");
 
 	private String label;
 

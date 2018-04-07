@@ -1,7 +1,7 @@
 package kata.pokerhand;
 
-import kata.pokerhand.enumeration.Figure;
-import kata.pokerhand.enumeration.Suit;
+import kata.pokerhand.bean.Figure;
+import kata.pokerhand.bean.Suit;
 
 import java.util.Objects;
 

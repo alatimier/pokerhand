@@ -1,31 +1,24 @@
 package kata.pokerhand;
 
-import kata.pokerhand.enumeration.Figure;
-import kata.pokerhand.enumeration.Suit;
+import com.google.common.collect.Lists;
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
+
+import static kata.pokerhand.Deck.*;
 
 public class CardTest {
 
 	@Test
-	public void two_cards_with_same_figure_but_different_suit_should_have_same_value() {
-		// Given
-		Card asOfSpade = new Card(Figure.AS, Suit.SPADE);
-		Card asOfHeart = new Card(Figure.AS, Suit.HEART);
-
-		// When
-		int result = asOfSpade.compareTo(asOfHeart);
-
-		// Then
-		Assert.assertEquals(0, result);
+	public void should_have_same_value_for_two_card_with_same_figure() {
+		Assert.assertNotEquals(ACE_OF_SPADE, ACE_OF_HEART);
+		Assert.assertEquals(0, ACE_OF_SPADE.compareTo(ACE_OF_HEART));
 	}
 
 	@Test
-	public void a_list_of_cards_should_be_sortable_in_ascending_order() {
+	public void should_rank_cards_accordingly_to_card_values() {
 		// Given
 		List<Card> cards = getOrderedCardList();
 		Collections.shuffle(cards);
@@ -38,21 +31,21 @@ public class CardTest {
 	}
 
 	private List<Card> getOrderedCardList() {
-		List<Card> cards = new LinkedList<>();
-		cards.add(new Card(Figure.TWO, Suit.DIAMOND));
-		cards.add(new Card(Figure.THREE, Suit.SPADE));
-		cards.add(new Card(Figure.FOUR, Suit.DIAMOND));
-		cards.add(new Card(Figure.FIVE, Suit.DIAMOND));
-		cards.add(new Card(Figure.SIX, Suit.CLUB));
-		cards.add(new Card(Figure.SEVEN, Suit.DIAMOND));
-		cards.add(new Card(Figure.EIGHT, Suit.DIAMOND));
-		cards.add(new Card(Figure.NINE, Suit.CLUB));
-		cards.add(new Card(Figure.TEN, Suit.DIAMOND));
-		cards.add(new Card(Figure.JACK, Suit.SPADE));
-		cards.add(new Card(Figure.QUEEN, Suit.CLUB));
-		cards.add(new Card(Figure.KING, Suit.DIAMOND));
-		cards.add(new Card(Figure.AS, Suit.HEART));
-		return cards;
+		return Lists.newArrayList(
+				TWO_OF_DIAMOND,
+				THREE_OF_CLUB,
+				FOUR_OF_HEART,
+				FIVE_OF_CLUB,
+				SIX_OF_SPADE,
+				SEVEN_OF_DIAMOND,
+				EIGHT_OF_CLUB,
+				NINE_OF_HEART,
+				TEN_OF_DIAMOND,
+				JACK_OF_SPADE,
+				QUEEN_OF_HEART,
+				KING_OF_CLUB,
+				ACE_OF_SPADE
+		);
 	}
 
 }

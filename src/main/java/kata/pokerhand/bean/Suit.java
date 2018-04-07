@@ -1,4 +1,4 @@
-package kata.pokerhand.enumeration;
+package kata.pokerhand.bean;
 
 public enum Suit {
 
