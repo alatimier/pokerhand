@@ -72,18 +72,18 @@ public class Hand implements Comparable<Hand> {
 	}
 
 	public List<Figure> getPairsFiguresRankedFromHighest() {
-		return getFigureByNumberOfOccurrence(2).collect(Collectors.toList());
+		return getFiguresByNumberOfOccurrence(2).collect(Collectors.toList());
 	}
 
 	public Optional<Figure> getThreeOfAKindFigure() {
-		return getFigureByNumberOfOccurrence(3).findFirst();
+		return getFiguresByNumberOfOccurrence(3).findFirst();
 	}
 
 	public Optional<Figure> getFourOfAKindFigure() {
-		return getFigureByNumberOfOccurrence(4).findFirst();
+		return getFiguresByNumberOfOccurrence(4).findFirst();
 	}
 
-	private Stream<Figure> getFigureByNumberOfOccurrence(int occurrences) {
+	private Stream<Figure> getFiguresByNumberOfOccurrence(int occurrences) {
 		return cards.stream()
 				.map(Card::getFigure)
 				.collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
