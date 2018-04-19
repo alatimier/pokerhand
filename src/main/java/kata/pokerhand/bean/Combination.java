@@ -9,37 +9,13 @@ import java.util.stream.Collectors;
 public enum Combination {
 
 	HIGH_CARD("High card", (hand1, hand2) -> compareLists(hand1.getCards(), hand2.getCards())),
-
-	PAIR("Pair", (hand1, hand2) -> {
-		List<Figure> hand1Pairs = hand1.getPairsFiguresRankedFromHighest();
-		List<Figure> hand2Pairs = hand2.getPairsFiguresRankedFromHighest();
-
-		// Compare pairs first
-		int result = compareLists(hand1Pairs, hand2Pairs);
-
-		// If pairs have same values, compare remaining cards
-		if (result == 0) {
-			result = compareLists(
-					hand1.getCards().stream().filter(card -> !hand1Pairs.contains(card.getFigure())).collect(Collectors.toList()),
-					hand2.getCards().stream().filter(card -> !hand2Pairs.contains(card.getFigure())).collect(Collectors.toList())
-			);
-		}
-
-		return result;
-	}),
-
-	TWO_PAIRS("Two pairs", PAIR.comparator),
-
-	THREE_OF_A_KIND("Three of a kind", Comparator.comparing(hand -> hand.getThreeOfAKindFigure().get())),
-
+	PAIR("Pair", Combination::comparePairs),
+	TWO_PAIRS("Two pairs", Combination::comparePairs),
+	THREE_OF_A_KIND("Three of a kind", Combination::compareThreeOfAKinds),
 	STRAIGHT("Straight", Comparator.comparing(hand -> hand.getCards().get(0))),
-
 	FLUSH("Flush", HIGH_CARD.comparator),
-
-	FULL_HOUSE("Full house", THREE_OF_A_KIND.comparator),
-
-	FOUR_OF_A_KIND("Four of a kind", Comparator.comparing(hand -> hand.getFourOfAKindFigure().get())),
-
+	FULL_HOUSE("Full house", Combination::compareThreeOfAKinds),
+	FOUR_OF_A_KIND("Four of a kind", Combination::compareFourOfAKinds),
 	STRAIGHT_FLUSH("Straight flush", STRAIGHT.comparator);
 
 	private String label;
@@ -73,6 +49,38 @@ public enum Combination {
 			}
 		}
 		return result;
+	}
+
+	private static int comparePairs(Hand hand1, Hand hand2) {
+		List<Figure> hand1Pairs = hand1.getPairsFiguresRankedFromHighest();
+		List<Figure> hand2Pairs = hand2.getPairsFiguresRankedFromHighest();
+
+		// Compare pairs first
+		int result = compareLists(hand1Pairs, hand2Pairs);
+
+		// If pairs have same values, compare remaining cards
+		if (result == 0) {
+			result = compareLists(
+					hand1.getCards().stream().filter(card -> !hand1Pairs.contains(card.getFigure())).collect(Collectors.toList()),
+					hand2.getCards().stream().filter(card -> !hand2Pairs.contains(card.getFigure())).collect(Collectors.toList())
+			);
+		}
+
+		return result;
+	}
+
+	private static int compareThreeOfAKinds(Hand hand1, Hand hand2) {
+		if (hand1.getThreeOfAKindFigure().isPresent() && hand2.getThreeOfAKindFigure().isPresent()) {
+			return hand1.getThreeOfAKindFigure().get().compareTo(hand2.getThreeOfAKindFigure().get());
+		}
+		throw new IllegalArgumentException("Hands must contains three of a kind !");
+	}
+
+	private static int compareFourOfAKinds(Hand hand1, Hand hand2) {
+		if (hand1.getFourOfAKindFigure().isPresent() && hand2.getFourOfAKindFigure().isPresent()) {
+			return hand1.getFourOfAKindFigure().get().compareTo(hand2.getFourOfAKindFigure().get());
+		}
+		throw new IllegalArgumentException("Hands must contains four of a kind !");
 	}
 
 }
